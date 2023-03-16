@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useState } from "react";
-import { ActionType, initialState, reducer, StateType } from ".";
+// import { ActionType, initialState, reducer, StateType } from ".";
 
 /// Create a context with the provided type
 const AppContext = createContext<ContextType | null>(null);
@@ -22,6 +22,34 @@ type ContextType = {
   dispatch: React.Dispatch<ActionType>;
 };
 
+//#region useReducer
+
+type StateType = {
+  num: number;
+};
+
+type ActionType = { type: "INCREMENT" } | { type: "DECREMENT" };
+
+const initialState = {
+  num: 0,
+};
+
+function reducer(state: StateType, action: ActionType) {
+  switch (action.type) {
+    case "INCREMENT":
+      return {
+        num: state.num + 1,
+      };
+    case "DECREMENT":
+      return {
+        num: state.num - 1,
+      };
+    default:
+      throw new Error(`Unhandled action type: ${action}`);
+  }
+}
+//#endregion
+
 function ContextProvider(props: React.PropsWithChildren<{}>) {
   const [count, setCount] = useState(0);
 
@@ -40,4 +68,4 @@ function ContextProvider(props: React.PropsWithChildren<{}>) {
   return <AppContext.Provider value={contextValue} {...props} />;
 }
 
-export default ContextProvider
+export default ContextProvider;
